@@ -1,5 +1,5 @@
 const data = require('./data')
-
+const { ipcMain } = require('electron') 
 module.exports = {
 
     templateInicial: null,
@@ -49,5 +49,66 @@ module.exports = {
         )
 
         return this.templateInicial
+    },
+
+    geraMenuPrincipalTemplate(app){
+
+        let templateMenu = [
+            {
+                label: 'View',
+                submenu: [
+                    {
+                        role: 'reload'
+                    },
+                    {
+                        role: 'toggledevtools'
+                    },
+                ]
+            },
+            {
+                label: 'Window',
+                submenu: [
+                    {
+                        role: 'minimize',
+                        accelerator: 'Alt+M'
+                    },
+                    {
+                        role: 'maximize',
+                        accelerator: 'Shift+M'
+                    },
+                    {
+                        role: 'close'
+                    },
+                ]
+            },
+            {
+                label: 'Sobre',
+                submenu: [
+                    {
+                        label: 'Sobre o MyTimer',
+                        accelerator: 'CommandOrControl+I',
+                        click: () => {
+                            ipcMain.emit('abrir-janela-sobre')
+                        }
+                    },
+                ]
+            }
+        ]
+    
+        if(process.platform == 'darwin'){
+            templateMenu.unshift(
+                {
+                    label: app.getName(),
+                    submenu: [
+                        {
+                            label: 'MyTimer no Mac'
+                        },
+                    ]
+                }
+            )
+        }
+
+        return templateMenu
+
     },
 }

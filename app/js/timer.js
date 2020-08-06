@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron')
 
 const moment = require('moment')
 
-let segundos = null
+let segundos = 0
 let timer = null
 let tempo = null
 

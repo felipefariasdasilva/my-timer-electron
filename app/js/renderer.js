@@ -30,9 +30,17 @@ botaoplay.addEventListener('click', function(){
     if(play){
         timer.parar(curso.textContent)
         play = false
+        new Notification('MyTimer', {
+            body: `O curso ${curso.textContent} foi parado!!` ,
+            icon: 'img/stop-button.png'
+        })
     }else{
         timer.iniciar(tempo)
         play = true
+        new Notification('MyTimer', {
+            body: `O curso ${curso.textContent} foi iniciado!!`,
+            icon: 'img/play-button.png'
+        })
     }
 
     imgs = imgs.reverse()
@@ -41,19 +49,33 @@ botaoplay.addEventListener('click', function(){
 
 ipcRenderer.on('curso-trocado', (event, nomeCurso) => {
 
+    timer.parar(curso.textContent)
     data.pegaDadosCurso(nomeCurso)
         .then((dados)=>{
             tempo.textContent = dados.tempo
+        })
+        .catch((err)=>{
+            tempo.textContent = '00:00:00'
         })
 
     curso.textContent = nomeCurso
 })
 
 botaoAdicionar.addEventListener('click', function(){
+
+    if(campoAdicionar == ''){
+        return
+    }
+
     let novoCurso = campoAdicionar.value
     curso.textContent = novoCurso
     tempo.textContent = '00:00:00'
     campoAdicionar.value = ''
 
     ipcRenderer.send('curso-adicionado', novoCurso)
+})
+
+ipcRenderer.on('atalho-iniciar-parar', () => {
+    let click = new MouseEvent('click')
+    botaoplay.dispatchEvent(click)
 })

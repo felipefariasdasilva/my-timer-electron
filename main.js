@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
+const { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut } = require('electron')
 const data = require('./data')
 const templateGenerator = require('./template')
 
@@ -39,38 +39,15 @@ app.on('ready', () => {
     let trayMenu = Menu.buildFromTemplate(template)
     tray.setContextMenu(trayMenu)
 
-    let templateMenu = [
-        {
-            label: 'meu menu',
-            submenu: [
-                {
-                    label: 'item 1'
-                },
-                {
-                    label: 'item 2'
-                },
-            ]
-        }
-    ]
-
-    if(process.platform == 'darwin'){
-        templateMenu.unshift(
-            {
-                label: app.getName(),
-                submenu: [
-                    {
-                        label: 'item 1'
-                    },
-                    {
-                        label: 'item 2'
-                    },
-                ]
-            }
-        )
-    }
-
+    let templateMenu = templateGenerator.geraMenuPrincipalTemplate(app)
     let menuPrincipal = Menu.buildFromTemplate(templateMenu)
     Menu.setApplicationMenu(menuPrincipal)
+
+    globalShortcut.register('CmdOrCtrl+Shift+S', () =>{
+        mainWindow.send('atalho-iniciar-parar')
+    })
+
+    //mainWindow.openDevTools()
 
     splash.loadURL(`file://${__dirname}/app/splash.html`);
     mainWindow.loadURL(`file://${__dirname}/app/index.html`);
@@ -90,7 +67,7 @@ app.on('window-all-closed', () => {
     app.quit()
 })
 
-ipcMain.on('open-about', () => {
+ipcMain.on('abrir-janela-sobre', () => {
     if(sobreWindow == null){
         sobreWindow = new BrowserWindow(
             {

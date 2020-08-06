@@ -14,5 +14,5 @@ linkFechar.addEventListener('click', function () {
 })
 
 linkTwitter.addEventListener('click', function () {
-    shell.openExternal("https://www.twitter.com/dquintanilhas");
+    shell.openExternal("https://github.com/felipefariasdasilva");
 })
