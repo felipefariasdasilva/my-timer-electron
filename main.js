@@ -39,6 +39,39 @@ app.on('ready', () => {
     let trayMenu = Menu.buildFromTemplate(template)
     tray.setContextMenu(trayMenu)
 
+    let templateMenu = [
+        {
+            label: 'meu menu',
+            submenu: [
+                {
+                    label: 'item 1'
+                },
+                {
+                    label: 'item 2'
+                },
+            ]
+        }
+    ]
+
+    if(process.platform == 'darwin'){
+        templateMenu.unshift(
+            {
+                label: app.getName(),
+                submenu: [
+                    {
+                        label: 'item 1'
+                    },
+                    {
+                        label: 'item 2'
+                    },
+                ]
+            }
+        )
+    }
+
+    let menuPrincipal = Menu.buildFromTemplate(templateMenu)
+    Menu.setApplicationMenu(menuPrincipal)
+
     splash.loadURL(`file://${__dirname}/app/splash.html`);
     mainWindow.loadURL(`file://${__dirname}/app/index.html`);
 
