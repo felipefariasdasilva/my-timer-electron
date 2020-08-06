@@ -1,0 +1,18 @@
+/*Downloaded from https://www.codeseek.co/chrisgannon/svg-flight-loader-RaYxaO */
+body {
+    background-color: #0abab5;
+    overflow: hidden;
+  }
+  
+  body,
+  html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
